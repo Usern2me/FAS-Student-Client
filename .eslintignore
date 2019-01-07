@@ -1,4 +1,4 @@
-dist/**
-node_modules/**
-src/assets/**
-static/**
+/mock
+.eslintrc.js
+/deploy
+/public
