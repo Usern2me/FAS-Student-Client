@@ -1,6 +1,6 @@
 /*
- * @Author: Jan-superman 
- * @Date: 2018-10-09 15:37:17 
+ * @Author: Jan-superman
+ * @Date: 2018-10-09 15:37:17
  * @Last Modified by: superman
  * @Last Modified time: 2018-12-24 23:26:50
  */
@@ -14,28 +14,22 @@ import theme from '@/theme';
 
 const tabBarData = [
   {
-    title: '首页',
-    icon: 'shouye',
-    selectedIcon: 'shouye',
+    title: '考勤',
+    icon: 'home',
+    selectedIcon: 'home',
     link: '/',
   },
   {
-    title: '分类',
-    icon: 'fenlei',
-    selectedIcon: 'fenlei',
+    title: '课程',
+    icon: 'table',
+    selectedIcon: 'table',
     link: '/category',
   },
   {
-    title: '购物车',
-    icon: 'cart_icon',
-    selectedIcon: 'cart_icon',
-    link: '/shop',
-  },
-  {
     title: '我的',
-    icon: 'wode',
-    selectedIcon: 'wode',
-    link: '/me',
+    icon: 'user',
+    selectedIcon: 'user',
+    link: '/info',
   },
 ];
 
@@ -44,19 +38,21 @@ class MenuBar extends PureComponent {
     const { isMenubar, children, pathname } = this.props;
     return (
       <TabBar hidden={isMenubar} tintColor={theme.primaryColor}>
-        {tabBarData.map(({ title, icon, selectedIcon, link }) => (
-          <TabBar.Item
-            key={link}
-            title={title}
-            icon={<BizIcon type={icon} />}
-            selectedIcon={<BizIcon type={selectedIcon} />}
-            selected={pathname === link}
-            onPress={() => Router.push(`${link}`)}
-          >
-            {/* 匹配到的children路由进行渲染 */}
-            {children.props.location.pathname === link && children}
-          </TabBar.Item>
-        ))}
+        {tabBarData.map(({
+          title, icon, selectedIcon, link,
+        }) => (
+            <TabBar.Item
+              key={link}
+              title={title}
+              icon={<BizIcon type={icon} />}
+              selectedIcon={<BizIcon type={selectedIcon} />}
+              selected={pathname === link}
+              onPress={() => Router.push(`${link}`)}
+            >
+              {/* 匹配到的children路由进行渲染 */}
+              {children.props.location.pathname === link && children}
+            </TabBar.Item>
+          ))}
       </TabBar>
     );
   }

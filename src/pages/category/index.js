@@ -1,6 +1,6 @@
 /*
- * @Author: Jan-superman 
- * @Date: 2018-09-27 20:39:02 
+ * @Author: Jan-superman
+ * @Date: 2018-09-27 20:39:02
  * @Last Modified by: superman
  * @Last Modified time: 2018-12-25 01:03:00
  */
@@ -30,11 +30,11 @@ class Category extends PureComponent {
     });
   }
 
-  getRef = e => {
+  getRef = (e) => {
     this.container = React.cloneElement(e);
   };
 
-  handleSetActiveTab = id => {
+  handleSetActiveTab = (id) => {
     const { dispatch } = this.props;
     dispatch({
       type: 'category/GetSubcategories',

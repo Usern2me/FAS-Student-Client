@@ -16,7 +16,7 @@ export default {
           webpackChunkName: true,
         },
         title: {
-          defaultTitle: '商城',
+          defaultTitle: '考勤系统',
         },
         dll: false,
         pwa: false,

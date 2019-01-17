@@ -1,26 +1,20 @@
 {
-  "name": "shop",
+  "name": "fas-student-client",
   "version": "1.0.0",
-  "description": "新版商城",
+  "description": "学生端",
   "private": true,
   "scripts": {
     "start": "cross-env PORT=8099 umi dev",
     "build": "umi build",
     "test": "umi test",
-    "analyze": "cross-env ANALYZE=1 umi build",
-    "lint": "eslint --ext .js src && npm run lint:style",
-    "lint:style": "stylelint \"src/**/*.less\" --syntax less",
-    "lint:fix": "eslint --fix --ext .js src && npm run lint:style",
-    "lint-staged:js": "eslint --ext .js",
-    "precommit": "lint-staged",
-    "prettier": "prettier --write ./src/**/**/**/*"
+    "analyze": "cross-env ANALYZE=1 umi build"
   },
   "dependencies": {
-    "antd-mobile": "^2.2.5",
     "better-scroll": "^1.13.2",
     "dva": "^2.4.0",
     "enzyme": "^3.4.4",
     "hash.js": "^1.1.5",
+    "material-ui": "^0.20.2",
     "nprogress": "^0.2.0",
     "prop-types": "^15.5.10",
     "qs": "^6.5.2",

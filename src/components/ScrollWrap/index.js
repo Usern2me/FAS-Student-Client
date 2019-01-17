@@ -16,13 +16,15 @@ class ScrollWrap extends PureComponent {
   }
 
   render() {
-    const { children, wrapId, wrapClass, height } = this.props;
+    const {
+      children, wrapId, wrapClass, height,
+    } = this.props;
     return (
       <div
         style={{ overflow: 'hidden', height }}
         id={wrapId}
         className={wrapClass}
-        ref={ref => {
+        ref={(ref) => {
           this.myRef = ref;
         }}
       >

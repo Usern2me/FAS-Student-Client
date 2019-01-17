@@ -1,6 +1,6 @@
 /*
- * @Author: Jan-superman 
- * @Date: 2018-09-27 20:38:14 
+ * @Author: Jan-superman
+ * @Date: 2018-09-27 20:38:14
  * @Last Modified by: superman
  * @Last Modified time: 2018-12-25 00:51:39
  */
@@ -12,10 +12,11 @@ import withRouter from 'umi/withRouter';
 import { connect } from 'dva';
 import '@/layouts/nprogress.less';
 
+// 进度条
 NProgress.configure({ showSpinner: false });
 
 // 底部有bar菜单
-const BarRoutes = ['/shop', '/', '/me', '/category'];
+const BarRoutes = ['/', '/info', '/category'];
 let currHref = '';
 
 class BasicLayout extends PureComponent {
@@ -44,4 +45,5 @@ class BasicLayout extends PureComponent {
   }
 }
 
+// location发生变化的时候使用redux的connect的组件会受阻 要用withRouter包裹起来
 export default withRouter(connect(({ app, loading }) => ({ app, loading }))(BasicLayout));
