@@ -1,11 +1,11 @@
 /*
- * @Author: Jan-superman 
- * @Date: 2018-10-14 16:02:35 
+ * @Author: Jan-superman
+ * @Date: 2018-10-14 16:02:35
  * @Last Modified by: superman
  * @Last Modified time: 2018-12-25 00:56:22
  */
 
-import { stringify, request, apiUrlfun } from '../config';
+import { stringify, request } from '../config';
 
 // 获取商品列表
 export async function rtsGetCommodityList(params) {

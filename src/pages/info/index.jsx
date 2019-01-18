@@ -1,32 +1,51 @@
 
 import React, { Component } from 'react';
-import { InputItem, Button } from 'antd-mobile'
+import { Grid, TextField } from 'material-ui'
+import LoadingButton from '../../components/LoadingButton'
 
-import style from '../index.less'
+import style from './index.less'
 
 class Login extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
-      isLoading: false
+      loading: false
     }
   }
   enterLoading = () => {
     this.setState({ isLoading: true })
   }
 
+  login = () => {
+    this.enterLoading
+  }
+
   render() {
     return (
-      <div className="login-container">
-        <div className="login-input">
-          <InputItem></InputItem>
-          <InputItem></InputItem>
-        </div>
-        <div className="login-submit">
-          <Button type="primary" icon="poweroff" loading={this.state.isLoading} onClick={this.enterLoading}>
-            确认
-            </Button>
-        </div>
+      <div className={style.loginContainer}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center">
+          <Grid item xs={12}>
+            <TextField
+              label="请输入学号"
+              margin="normal"></TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label='请输入密码'
+              type="password"
+              margin="normal" />
+          </Grid>
+          <Grid item xs={12}>
+            <LoadingButton
+              onClick="this.login"
+              loading={this.state.loading}>
+            </LoadingButton>
+          </Grid>
+        </Grid>
       </div>
     );
   }

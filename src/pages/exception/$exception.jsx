@@ -2,14 +2,15 @@ import React from 'react';
 import { Link } from 'umi/link';
 import './exception.less';
 
-export default (props) => {
-  const { error } = props;
+export default ({ match }) => {
+  // 获取路由里的参数
+  const error = match.params.exception;
   return (
     <div className="exception-container">
       <img src="../../assets/yay.jpg" alt="页面出错啦" />
       <div className="promopt">
         <h3 className="title">
-          {error}
+          {error}-错误
         </h3>
         <p className="description">
           您要找的页面没有找到，请返回
