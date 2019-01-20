@@ -32,7 +32,7 @@ class BasicLayout extends PureComponent {
     }
 
     return (
-      <div style={{ overflowX: 'hidden' }}>
+      <div style={{ overflowX: 'hidden'}}>
         <MenuBar pathname={location.pathname}>{children}</MenuBar>
       </div>
     );

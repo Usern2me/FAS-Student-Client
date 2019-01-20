@@ -1,7 +1,7 @@
 {
   "name": "fas-student-client",
   "version": "1.0.0",
-  "description": "学生端",
+  "description": "人脸考勤系统学生端",
   "private": true,
   "scripts": {
     "start": "cross-env PORT=8099 umi dev",
@@ -10,16 +10,19 @@
     "analyze": "cross-env ANALYZE=1 umi build"
   },
   "dependencies": {
+    "antd-mobile": "^2.2.8",
     "better-scroll": "^1.13.2",
     "dva": "^2.4.0",
     "enzyme": "^3.4.4",
     "hash.js": "^1.1.5",
-    "material-ui": "^0.20.2",
     "npm": "^6.6.0",
     "nprogress": "^0.2.0",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.2",
     "qs": "^6.5.2",
-    "react": "^16.5.1"
+    "rc-form": "^2.4.1",
+    "react": "^16.5.1",
+    "umi": "^2.1.1",
+    "umi-plugin-react": "^1.0.1"
   },
   "optionalDependencies": {
     "puppeteer": "^1.9.0"
@@ -27,7 +30,7 @@
   "devDependencies": {
     "@babel/polyfill": "^7.0.0",
     "babel-eslint": "^9.0.0",
-    "cross-env": "^5.1.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.4.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-prettier": "^3.0.1",

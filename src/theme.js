@@ -1,12 +1,12 @@
 /**
  * 全局的主题色
  */
-module.exports = {
+const theme = {
   primaryColor: '#7A00BF',
   mainPurple: '#7A00BF',
   morePurple: '#5E2A86',
   lessPurple: '#76449C',
-  purpleGray: '#B995D4',
+  purpleGray: '#fff',
   purpleWhite: '#DDC8ED',
   mainPink: '#FF0078',
   morePink: '#9E3276',
@@ -19,3 +19,4 @@ module.exports = {
   blueGray: '#A8B4DC',
   blueWhite: '#D7DDF2',
 };
+module.exports = theme

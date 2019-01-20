@@ -1,53 +1,27 @@
-
 import React, { Component } from 'react';
-import { Grid, TextField } from 'material-ui'
-import LoadingButton from '../../components/LoadingButton'
+import { Card, WingBlank, WhiteSpace } from 'antd-mobile'
 
 import style from './index.less'
-
-class Login extends Component {
-  constructor() {
-    super()
-    this.state = {
-      loading: false
-    }
-  }
-  enterLoading = () => {
-    this.setState({ isLoading: true })
-  }
-
-  login = () => {
-    this.enterLoading
-  }
-
+export default class Info extends Component {
   render() {
     return (
-      <div className={style.loginContainer}>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center">
-          <Grid item xs={12}>
-            <TextField
-              label="请输入学号"
-              margin="normal"></TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label='请输入密码'
-              type="password"
-              margin="normal" />
-          </Grid>
-          <Grid item xs={12}>
-            <LoadingButton
-              onClick="this.login"
-              loading={this.state.loading}>
-            </LoadingButton>
-          </Grid>
-        </Grid>
+      <div className={style.container}>
+        <div className={style.top}></div>
+        <div className={style.avater}></div>
+        <div>
+            <WhiteSpace size="sm" />
+            <Card className={style.card}>
+              <Card.Header
+                title="This is title"
+                thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
+              />
+              <Card.Body>
+                <div>This is content of `Card`</div>
+              </Card.Body>
+            </Card>
+        </div>
+        <div className={style.edit}></div>
       </div>
     );
   }
 }
-export default Login
