@@ -8,7 +8,7 @@ const theme = {
   lessPurple: '#76449C',
   purpleGray: '#fff',
   purpleWhite: '#DDC8ED',
-  mainPink: '#FF0078',
+  mainPink: '#f0027f',
   morePink: '#9E3276',
   lessPink: '#BB5495',
   pinkGray: '#E7AAD0',

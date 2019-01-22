@@ -18,7 +18,7 @@ module.exports = {
   ],
   rules: {
     "no-control-regex": 2,
-    "comma-style": [2, "never"],
+    "no-unused-vars":1,
     'react/jsx-filename-extension': [
       1,
       {
@@ -31,13 +31,13 @@ module.exports = {
     'react/forbid-prop-types': 0,
     'react/jsx-one-expression-per-line': 0,
     'import/no-unresolved': [
-      2,
+      0,
       {
         ignore: ['^@/', '^umi/'],
       },
     ],
     'import/no-extraneous-dependencies': [
-      2,
+      0,
       {
         optionalDependencies: true,
       },
@@ -54,8 +54,8 @@ module.exports = {
     "react/prefer-stateless-function": [0, {
       "ignorePureComponents": true
     }],
-    'react/jsx-indent': 4,
-    'indent': [0],
+
+    'indent': [1,2],
     'no-use-before-define': 0,
   },
   settings: {

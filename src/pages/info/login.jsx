@@ -1,15 +1,15 @@
-
-import React, { Component } from 'react'
-import { Flex, InputItem, WhiteSpace, Button } from 'antd-mobile'
-import style from './login.less'
-import  Router  from 'umi/router';
+import React, { Component } from "react"
+import { List, Flex, InputItem, WhiteSpace, Button, Toast } from "antd-mobile"
+import style from "./login.less"
+import Router from "umi/router"
+import { userLogin } from "@/services"
 
 class Login extends Component {
   constructor() {
     super()
   }
   state = {
-    loading: false,
+    loading: false
   }
   enterLoading = () => {
     this.setState({ loading: true })
@@ -17,11 +17,22 @@ class Login extends Component {
 
   login = () => {
     this.enterLoading()
-    const { state: { value: id } } = this.idRef
-    const { state: { value: pwd } } = this.pwdRef
-    // 提交数据
-    // 跳转路由
-    // Router.push('/info')
+    const {
+      state: { value: id }
+    } = this.idRef
+    const {
+      state: { value: pwd }
+    } = this.pwdRef
+    // 请求服务器数据
+    userLogin({ id: id, pwd: pwd })
+      .then(() => {
+        Toast.success("登录成功，正在跳转...", 0.8)
+        Router.push("/info")
+      })
+      .catch(() => {
+        Toast.fail("password error")
+        this.setState({ loading: false })
+      })
   }
 
   render() {
@@ -31,25 +42,21 @@ class Login extends Component {
           <WhiteSpace size="lg" />
           <Flex>
             <Flex.Item>
-              <InputItem
-                clear
-                ref={el => this.idRef = el}
-                placeholder="在此处输入您的学号"
-                className={style.loginInput}>
-                学号：
-              </InputItem>
+              <List>
+                <InputItem clear ref={el => (this.idRef = el)} className={style.loginInput}>
+                  学号：
+                </InputItem>
+              </List>
             </Flex.Item>
           </Flex>
           <WhiteSpace size="lg" />
           <Flex>
             <Flex.Item>
-              <InputItem
-                clear
-                ref={el => this.pwdRef = el}
-                placeholder="在此处输入您的密码"
-                className={style.loginInput}>
-                密码：
-              </InputItem>
+              <List>
+                <InputItem clear ref={el => (this.pwdRef = el)} className={style.loginInput}>
+                  密码：
+                </InputItem>
+              </List>
             </Flex.Item>
           </Flex>
           <WhiteSpace size="lg" />
@@ -60,23 +67,21 @@ class Login extends Component {
                 onClick={this.login}
                 className={style.loginSubmit}>
                 登陆
-            </Button>
+              </Button>
             </Flex.Item>
           </Flex>
           <WhiteSpace size="lg" />
           <Flex>
             <Flex.Item>
-              <a
-                onClick={() => Router.push('info/register')}
-              className={style.loginLink}>
+              <a onClick={() => Router.push("/info/register")} className={style.loginLink}>
                 没有账号？前往注册
-                </a>
+              </a>
             </Flex.Item>
           </Flex>
           <WhiteSpace size="lg" />
         </div>
       </div>
-    );
+    )
   }
 }
 export default Login

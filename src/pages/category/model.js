@@ -21,7 +21,6 @@ export default {
             firstList: data,
           },
         });
-
         // 一级分类第一个id，获取子分类
         yield put({
           type: 'GetSubcategories',
