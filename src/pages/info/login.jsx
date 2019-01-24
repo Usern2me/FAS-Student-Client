@@ -27,7 +27,7 @@ class Login extends Component {
     userLogin({ id: id, pwd: pwd })
       .then(() => {
         Toast.success("登录成功，正在跳转...", 0.8)
-        Router.push("/info")
+        Router.push(`/info?id=${id}`)
       })
       .catch(() => {
         Toast.fail("password error")

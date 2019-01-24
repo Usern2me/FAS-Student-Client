@@ -2,36 +2,21 @@ import { getInfo, updateInfo, register } from "@/services"
 
 export default {
   namespace: "info",
-  state: {
-    info: {
-      id: "",
-      name: "",
-      age: "",
-      college: "",
-      class: "",
-      marjor: "",
-      phone: "",
-      email: "",
-      address: "",
-      nation: ""
-    }
-  },
+  state: { info: undefined },
   // 异步操作
   effects: {
-    *GetInfo({ payload }, { call, put }) {
-      const { data } = yield call(getInfo, { payload })
-      yield put({ type: "save", payload: { data } })
+    *GetInfo({ payload: info }, { call, put }) {
+      // 请求用户数据
+      const { data } = yield call(getInfo, info)
+      // 发起一个action
+      yield put({ type: "save", payload: data[0] })
     }
   },
   // 同步操作
-  reducer: {
-    save(
-      state,
-      {
-        payload: { data: info }
-      }
-    ) {
-      return { ...state, info }
+  reducers: {
+    save(state, { payload: info }) {
+      let newState = Object.assign({}, state, info)
+      return newState
     }
   },
   //订阅数据，如键盘或路由

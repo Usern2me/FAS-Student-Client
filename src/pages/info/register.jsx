@@ -1,76 +1,18 @@
-import React, { Component } from "react"
+import React, { PureComponent } from "react"
 import Router from "umi/router"
 import { List, InputItem, WhiteSpace, NavBar, Icon, Button, DatePicker, Picker } from "antd-mobile"
 import { createForm } from "rc-form"
-import styles from "./register.less"
 
-const allCollege = [
-  {
-    value: "340000",
-    label: "安徽省",
-    children: [
-      {
-        value: "341522",
-        label: "霍邱县",
-        children: []
-      },
-      {
-        value: "341525",
-        label: "霍山县",
-        children: []
-      },
-      {
-        value: "341502",
-        label: "金安区",
-        children: []
-      }
-    ]
-  },
-  {
-    value: "341800",
-    label: "宣城市",
-    children: [
-      {
-        value: "341822",
-        label: "广德县",
-        children: []
-      },
-      {
-        value: "341824",
-        label: "绩溪县",
-        children: []
-      },
-      {
-        value: "341825",
-        label: "旌德县",
-        children: []
-      }
-    ]
-  }
-]
-const allClass = [
-  {
-    value: "11",
-    label: "111",
-    children: []
-  },
-  {
-    value: "22",
-    label: "22",
-    children: []
-  },
-  {
-    value: "33",
-    label: "333",
-    children: []
-  }
-]
+import { getSchool } from "@/services"
+
+import styles from "./register.less"
 
 const buttonStyle = {
   width: "70%",
   margin: "0 auto"
 }
-class Register extends Component {
+
+class Register extends PureComponent {
   constructor(props) {
     super(props)
   }
@@ -82,11 +24,54 @@ class Register extends Component {
     gender: "男",
     college: "",
     class: "",
-    year: ""
+    year: "",
+    college_class: "",
+    asyncValue: [],
+    allCollege: [],
+    allClass: []
+  }
+  async componentDidMount() {
+    await this.fetchData()
   }
 
-  componentDidMount() {
-    this.fetchData()
+  fetchData = async () => {
+    // 初始化下拉框的内容
+    let { data: listData } = await getSchool()
+    this.setState({ allCollege: listData })
+  }
+  onPickerChange = val => {
+    let value = [...val]
+    console.log("...asyncValue...", value)
+    let [major_id, class_id] = val
+    let classRes = []
+    this.state.allCollege.map(v => {
+      if (v.value === major_id) {
+        v.children.map(c => {
+          if (c.value === class_id) {
+            classRes = c.children
+          }
+        })
+      }
+    })
+    this.setState({ allClass: classRes })
+    this.setState({ asyncValue: value })
+    console.log("---after setState---", this.state.asyncValue)
+  }
+  handleChange = e => {
+    // console.log('aaa',e)
+    // console.log(this.props.form.getFieldValue('name'))
+    this.setState({ e })
+  }
+  handleClick = () => {
+    // 验证数据并提交数据
+    this.props.form.validateFields((error, value) => {
+      if (error) {
+        console.log("error->", error)
+      } else {
+        console.log("validator->", value)
+        // Router.push(/info?id=${id})
+      }
+    })
   }
 
   // 控制错误的组件
@@ -100,25 +85,6 @@ class Register extends Component {
       )
     )
   }
-  fetchData = () => {
-    // 初始化下拉框的内容
-  }
-  handleChange = e => {
-    // console.log('aaa',e)
-    // console.log(this.props.form.getFieldValue('name'))
-    this.setState({ e })
-  }
-  handleClick = e => {
-    // 验证数据并提交数据
-    this.props.form.validateFields((error, value) => {
-      if (error) {
-        console.log("error->", error)
-      } else {
-        console.log("validator->", value)
-      }
-    })
-  }
-
   render() {
     const { getFieldProps } = this.props.form
     return (
@@ -131,16 +97,17 @@ class Register extends Component {
             <InputItem
               clear
               placeholder="请输入姓名"
+              onBlur={val => this.setState({ name: val })}
               {...getFieldProps("name", {
-                rules: [{ required: true }, { range: { max: 6, min: 2 } }]
+                rules: [{ required: true }]
               })}>
               姓名
             </InputItem>
             {this.errorCom("name")}
             <InputItem
               clear
-              type="number"
               placeholder="请输入年龄"
+              onBlur={val => this.setState({ age: val })}
               {...getFieldProps("age", {
                 rules: [{ required: true }]
               })}>
@@ -155,14 +122,25 @@ class Register extends Component {
               <List.Item arrow="horizontal">入学年份</List.Item>
             </DatePicker>
             {this.errorCom("year")}
+
             <Picker
               title="请选择学院和专业"
-              data={allCollege}
               cols={2}
+              value={this.state.asyncValue}
+              data={this.state.allCollege}
+              onOk={this.onPickerChange}
               {...getFieldProps("college")}>
               <List.Item arrow="horizontal">学院-专业</List.Item>
             </Picker>
-            <Picker title="请选择班级" data={allClass} cols={1} {...getFieldProps("class")}>
+            <Picker
+              title="请选择班级"
+              data={this.state.allClass}
+              cols={1}
+              value={this.state.class}
+              onOk={val => {
+                this.setState({ class: val })
+              }}
+              {...getFieldProps("class")}>
               <List.Item arrow="horizontal">班级</List.Item>
             </Picker>
             <WhiteSpace />

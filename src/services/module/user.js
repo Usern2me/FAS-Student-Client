@@ -9,7 +9,7 @@ async function getCustomPwd(params) {
 
 // 获取学生信息
 export async function getInfo(params) {
-  return request(`${host}/api/getStudentById?${stringify(params)}`)
+  return request(`${host}/api/student?${stringify(params)}`)
 }
 // 更新学生信息
 export async function updateInfo(params) {
