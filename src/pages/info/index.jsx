@@ -7,9 +7,7 @@ import Router from "umi/router"
 import style from "./index.less"
 
 // connect视图和state
-@connect(({ info }) => ({
-  info
-}))
+@connect(({ info }) => ({info}))
 class Info extends Component {
   constructor(props) {
     super(props)
@@ -22,10 +20,9 @@ class Info extends Component {
     const { info } = this.props
     return (
       <div className={style.container}>
-        <div className={style.edit}>
+        <div className={style.edit} onClick={() => Router.push("/info/edit")}>
           <BizIcon type="bianji" />
         </div>
-        <div className={style.login} onClick={() => Router.push("/info/login")} />
         <div className={style.top} />
         <div className={style.avater} />
         <div className={style.cardContainer}>

@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { Flex, Card } from "antd-mobile"
 import { connect } from "dva"
-
-import style from "./course.less"
+import { getCourse } from "@/services"
+import style from "./index.less"
 
 // 3节上午从8点半开始，2节的1为前两节，2为后两节
 const tableList = [
@@ -17,11 +17,11 @@ const tableList = [
 // 传的数据格式：[{ 'name':'高数','size': 3 }, { 'name':'大英','size': 21 }]
 const FlexBox = ({ course }) => (
   <div className={style.FlexBox}>
-    <Flex direction="column" >
-      {course.map(({ size, name },index) => {
+    <Flex direction="column">
+      {course.map(({ size, name }, index) => {
         // 如果是3节课的或者是2节下半场的就要偏移
         // 早上2节课上半场的要margin-bottom把下面的顶下去
-        let flag = size === 21 ? 0 : (size < 20 ? 1 : 2)
+        let flag = size === 21 ? 0 : size < 20 ? 1 : 2
         let _size = size < 20 ? 3 : 2
         let offsetStyle = {}
         // 判断向上偏移距离
@@ -58,9 +58,24 @@ const FlexBlock = ({ size, name }) => {
   )
 }
 
+@connect(({ info }) => ({ info }))
 class Course extends Component {
   constructor(props) {
     super(props)
+  }
+  state = {
+    table: undefined,
+    classInfo: undefined
+  }
+  componentDidMount() {
+    getCourse(this.props.info.class_id)
+      .then(res => {
+        console.log("getCourse result------->", res)
+        this.setState({ table: res.data })
+      })
+      .catch(err => {
+        console.log("componentDidMount errr---->", err)
+      })
   }
 
   render() {

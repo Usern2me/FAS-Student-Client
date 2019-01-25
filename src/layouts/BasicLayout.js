@@ -10,7 +10,7 @@ import '@/layouts/nprogress.less';
 NProgress.configure({ showSpinner: false });
 
 // 底部有bar菜单
-const BarRoutes = ['/', '/info', '/category'];
+const BarRoutes = ['/', '/info', '/course'];
 let currHref = '';
 
 class BasicLayout extends PureComponent {

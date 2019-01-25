@@ -17,3 +17,7 @@ export async function getAllClass(params) {
 export async function getClass(params) {
   return request(`${host}/api/class?${stringify(params)}`)
 }
+// 拿一个班的课程表
+export async function getCourse(params) {
+  return request(`${host}/api/course?${stringify(params)}`)
+}

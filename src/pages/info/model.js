@@ -1,4 +1,4 @@
-import { getInfo, updateInfo, register } from "@/services"
+import { getInfo } from "@/services"
 
 export default {
   namespace: "info",

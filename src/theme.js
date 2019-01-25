@@ -1,9 +1,12 @@
 /**
  * 自定义主题
  */
-const theme = {
+
+module.exports = {
+  // 官方变量
   primaryColor: "#7A00BF",
 
+  // 我的颜色
   mainPurple: "#7A00BF",
   morePurple: "#5E2A86",
   lessPurple: "#76449C",
@@ -19,6 +22,4 @@ const theme = {
   lessBlue: "#5365A2",
   blueGray: "#A8B4DC",
   blueWhite: "#D7DDF2"
-}
-
-export default theme
+};
