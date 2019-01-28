@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Flex, Card } from "antd-mobile"
 import { connect } from "dva"
-import { getCourse } from "@/services"
+import { getClassTable } from "@/services"
 import style from "./index.less"
 
 // 3节上午从8点半开始，2节的1为前两节，2为后两节
@@ -68,7 +68,7 @@ class Course extends Component {
     classInfo: undefined
   }
   componentDidMount() {
-    getCourse(this.props.info.class_id)
+    getClassTable({ class_id: this.props.info.class_id })
       .then(res => {
         console.log("getCourse result------->", res)
         this.setState({ table: res.data })

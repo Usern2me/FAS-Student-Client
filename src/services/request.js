@@ -82,7 +82,7 @@ export default function request(url, option) {
   const newOptions = { ...defaultOptions, ...options };
   if (
     newOptions.method === 'POST' ||
-    newOptions.method === 'PUT' ||
+    newOptions.method === 'PATCH' ||
     newOptions.method === 'DELETE'
   ) {
     if (!(newOptions.body instanceof FormData)) {
@@ -91,6 +91,7 @@ export default function request(url, option) {
         'Content-Type': 'application/json; charset=utf-8',
         ...newOptions.headers,
       };
+      // 以上三种方法在这里做stringify
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData

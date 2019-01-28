@@ -1,8 +1,8 @@
-import { getInfo } from "@/services"
+import { getInfo,updateInfo } from "@/services"
 
 export default {
   namespace: "info",
-  state: { info: undefined },
+  state: { },
   // 异步操作
   effects: {
     *GetInfo({ payload: info }, { call, put }) {
@@ -10,12 +10,13 @@ export default {
       const { data } = yield call(getInfo, info)
       // 发起一个action
       yield put({ type: "save", payload: data[0] })
-    }
+    },
   },
   // 同步操作
   reducers: {
     save(state, { payload: info }) {
       let newState = Object.assign({}, state, info)
+      console.log('-------models----reduce----',newState)
       return newState
     }
   },
