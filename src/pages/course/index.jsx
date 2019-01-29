@@ -1,62 +1,9 @@
 import React, { Component } from "react"
-import { Flex, Card } from "antd-mobile"
+import { Flex, Card, List, InputItem } from "antd-mobile"
+import FlexBox from "@/components/FlexBox"
 import { connect } from "dva"
 import { getClassTable } from "@/services"
 import style from "./index.less"
-
-// 3节上午从8点半开始，2节的1为前两节，2为后两节
-const tableList = [
-  [{ name: "高数", size: 3 }, { name: "大英", size: 21 }],
-  [{ name: "计算机", size: 22 }, { name: "语文", size: 3 }],
-  [{ name: "机电原理", size: 3 }, { name: "管理学", size: 21 }],
-  [{ name: "JAVA入门", size: 21 }, { name: "计算机网络", size: 3 }],
-  [{ name: "线性代数", size: 3 }, { name: "马克思马克思", size: 22 }]
-]
-
-// 每一竖行是两个FlexBox
-// 传的数据格式：[{ 'name':'高数','size': 3 }, { 'name':'大英','size': 21 }]
-const FlexBox = ({ course }) => (
-  <div className={style.FlexBox}>
-    <Flex direction="column">
-      {course.map(({ size, name }, index) => {
-        // 如果是3节课的或者是2节下半场的就要偏移
-        // 早上2节课上半场的要margin-bottom把下面的顶下去
-        let flag = size === 21 ? 0 : size < 20 ? 1 : 2
-        let _size = size < 20 ? 3 : 2
-        let offsetStyle = {}
-        // 判断向上偏移距离
-        if (flag === 1) {
-          offsetStyle = { marginTop: ".5rem" }
-        } else if (flag === 2) {
-          offsetStyle = { marginTop: "1rem" }
-        }
-        //判断向下偏移距离 只有一种情况就是上午的21
-        if (index === 0 && size === 21) {
-          offsetStyle = { marginBottom: "1rem" }
-        }
-        return (
-          <Flex.Item key={name} style={offsetStyle}>
-            <FlexBlock key={name} size={_size} name={name} flag={flag} />
-          </Flex.Item>
-        )
-      })}
-    </Flex>
-  </div>
-)
-
-// 每一个课程是一个FlexBlock
-const FlexBlock = ({ size, name }) => {
-  return (
-    <div className={style.flexBlock}>
-      <div className={style.courseName}>{name}</div>
-      <Flex direction="column">
-        <Flex.Item style={{ minHeight: ".5rem" }} />
-        <Flex.Item style={{ minHeight: ".5rem" }} />
-        {size > 2 && <Flex.Item style={{ minHeight: ".5rem" }} />}
-      </Flex>
-    </div>
-  )
-}
 
 @connect(({ info }) => ({ info }))
 class Course extends Component {
@@ -64,38 +11,122 @@ class Course extends Component {
     super(props)
   }
   state = {
-    table: undefined,
-    classInfo: undefined
+    tableList: [], // 格式化的课程表
+    classInfo: [], // 请求到的数据
+    courseInfo: [] // 课程的详细信息
   }
   componentDidMount() {
-    getClassTable({ class_id: this.props.info.class_id })
+    const { info } = this.props
+    // getClassTable({ class_id: info.class_id })
+    getClassTable({ class_id: 1111 })
       .then(res => {
-        console.log("getCourse result------->", res)
-        this.setState({ table: res.data })
+        res.data.forEach(v => {
+          v.time_hour = v.time_hour.slice(0, 5)
+        })
+        this.setState({ classInfo: res.data })
+        this.setState({ tableList: this.formatClasstable(res.data) })
       })
       .catch(err => {
         console.log("componentDidMount errr---->", err)
       })
   }
-
+  formatClasstable(data) {
+    let list = []
+    let current = []
+    // 3节上午从8点半开始，2节的1为前两节，2为后两节
+    let res = data.reduce((acc, v, index) => {
+      let { time_hour: time, course_duration: dur } = v
+      if (dur === 2) {
+        let hour = +time.split(':')[0]
+        if (index > 0) {
+          // 下午的科目 大于14点的就是22
+          hour > 14 ? (v.hour = 22) : (v.hour = 21)
+        } else {
+          // 上午的科目 大于10点的就是22
+          hour > 9 ? (v.hour = 22) : (v.hour = 21)
+        }
+      } else {
+        v.hour = 3
+      }
+      current.push({
+        name: v.course_name,
+        size: v.hour,
+        course_id: v.course_id,
+        weekend: v.time_weekend,
+        duration: v.course_duration
+      })
+      if (index % 2 !== 0) {
+        list.push(current)
+        current = []
+      }
+      return list
+    }, [])
+    // reduce有初始化参数index从0开始，没有从1开始
+    return res
+  }
+  // 点击切换课程信息
+  handleBoxClick = v => {
+    let { course_id, weekend } = v
+    let flag = weekend * 2 - 2
+    let tempData = this.state.classInfo.slice(flag, flag + 2)
+    let res = tempData.filter(v => {
+      return v.course_id === course_id
+    })
+    this.setState({ courseInfo: res[0] })
+  }
   render() {
-    const { name } = this.props
+    // const { name } = this.props.info
+    const { tableList } = this.state
+    const { course_name, teacher_name, classroom_id, time_hour } = this.state.courseInfo
     return (
       <div className={style.contanier}>
-        <div className={style.header}>{name}</div>
         <div className={style.top}>
-          <Flex direction="row">
-            {tableList.map((v, index) => (
-              <FlexBox key={index} course={v} />
-            ))}
-          </Flex>
+          <div className={style.tableHeader}>
+            <Flex justify="center">
+              {["一", "二", "三", "四", "五"].map((v, index) => (
+                <Flex.Item key={index}>{v}</Flex.Item>
+              ))}
+            </Flex>
+          </div>
+          <div className={style.tableSider}>
+            <Flex justify="between" direction="column">
+              {Array.from(new Array(8), (val, index) => index + 1).map((v, index) => (
+                <Flex.Item key={index} style={{ height: ".78rem" }}>
+                  {v}
+                </Flex.Item>
+              ))}
+            </Flex>
+          </div>
+          <div className="table">
+            <Flex direction="row">
+              {tableList.map((v, index) => (
+                <FlexBox
+                  select={e => {
+                    this.handleBoxClick(e)
+                  }}
+                  key={index}
+                  course={v}
+                />
+              ))}
+            </Flex>
+          </div>
         </div>
-        <div className={style.classIntro}>
-          <Card>
-            <Card.Header title="course name" />
-            <Card.Body>this is course intro</Card.Body>
-          </Card>
-        </div>
+        <Card>
+          <Card.Header title={course_name || "点击查看课程信息"} />
+          <Card.Body>
+            <List>
+              <InputItem editable="false" value={classroom_id}>
+                教室号
+              </InputItem>
+              <InputItem editable="false" value={teacher_name}>
+                教师名
+              </InputItem>
+              <InputItem editable="false" value={time_hour}>
+                上课时间
+              </InputItem>
+            </List>
+          </Card.Body>
+        </Card>
       </div>
     )
   }

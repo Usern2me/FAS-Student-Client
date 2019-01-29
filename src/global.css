@@ -105,8 +105,8 @@ section {
   display: block;
 }
 html {
-  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif,
-    'Droid Sans Fallback';
+  font-family: "PingFang SC", "STHeitiSC-Light", "Helvetica-Light", arial, sans-serif,
+    "Droid Sans Fallback";
 }
 ol,
 ul {
@@ -120,7 +120,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 table {
@@ -161,7 +161,7 @@ body {
 }
 
 :global(.clearfix:after) {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
@@ -192,4 +192,14 @@ body {
   left: 0px;
   right: 0px;
   z-index: 10;
+}
+.am-body {
+  padding-bottom: 0 !important;
+}
+.am-card-body {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.am-list-item .am-input-label {
+  font-size: 0.3rem !important;
 }
