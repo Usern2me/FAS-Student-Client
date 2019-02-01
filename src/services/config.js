@@ -2,7 +2,8 @@ import { stringify } from "qs"
 import request from "./request"
 
 const dev = process.env.NODE_ENV === "development"
-const host = "http://192.168.43.9:3000"
+// const host = "http://192.168.43.9:3000"
+const host = "http://192.168.0.101:3000"
 
 // 请求地址是当前访问地址
 const currentHost = () => {
