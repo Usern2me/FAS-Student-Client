@@ -1,13 +1,17 @@
 import React, { Component } from "react"
 import { Button, NoticeBar, WhiteSpace } from "antd-mobile"
 import { connect } from "dva"
+import Router from "umi/router"
 import BizIcon from "../../components/BizIcon"
 
-import { addFace } from "@/services/index"
+import { verifyFace } from "@/services/index"
 import styles from "./index.less"
 
 @connect(({ info }) => ({ info }))
 class Index extends Component {
+  constructor(props) {
+    super(props)
+  }
   state = {
     front: true,
     showCanvas: false
@@ -16,6 +20,8 @@ class Index extends Component {
   handlePhoto = async e => {
     this.setState({ showCanvas: true })
 
+    // 有没有更好的解决办法？？
+    let that = this
     let file = e.target.files[0]
     let reader = new FileReader()
     let img = new Image()
@@ -26,19 +32,20 @@ class Index extends Component {
     reader.onload = function(e) {
       img.src = e.target.result
       img.onload = function() {
-        canvas.width = 900
-        canvas.height = 900
+        canvas.width = 1000
+        canvas.height = 1000
         canvasContext.rotate((270 * Math.PI) / 180)
-        canvasContext.drawImage(img, -1200, 0, 1400, 900)
+        canvasContext.drawImage(img, -1200, 0, 1200, 800)
 
         imgObj.insertBefore(canvas, imgObj.childNodes[0])
+
+        // 转base64
+        let dataURL = canvas.toDataURL("image/png", 0.3)
+        // 上传图片
+        that.handleUpload(dataURL)
       }
     }
     reader.readAsDataURL(file)
-    // 转base64
-    let dataURL = canvas.toDataURL("image/jpeg", 0.8)
-    // 上传图片
-    await this.handleUpload(dataURL)
   }
   // 重新拍照
   handleReDraw = () => {
@@ -48,28 +55,39 @@ class Index extends Component {
   }
   // 上传服务器
   handleUpload = async img => {
-    const { stu_id, class_id } = this.props
-    await addFace({ group_id: class_id, user_id: stu_id, img: img })
-      .then(res => {
-        console.log("handle upload---->", res)
-      })
-      .catch(err => {
-        console.log("handle upload---->", err)
-      })
+    const { info } = this.props
+    const { class_id, stu_id } = info
+    await verifyFace({ group_id: class_id, uid: stu_id, img: img }).then(res => {
+      if (res.code == 0 && res.data.face_token) {
+        Router.push({
+          pathname: "/result",
+          query: {
+            status: true,
+            class_name: this.props.info.class_name,
+            time: Date.now()
+          }
+        })
+      } else {
+        Router.push({
+          pathname: "/result",
+          query: {
+            status: false
+          }
+        })
+      }
+    })
   }
   // 查看考勤记录
   handleClick = () => {}
 
   render() {
     const { showCanvas } = this.state
-    const { name } = this.props
+    // const { info } = this.props
+    // const { name } = info
     return (
       <div className={styles.container}>
         <div className={styles.top}>
-          <div className={styles.info}>
-            你好，
-            {name}
-          </div>
+          <div className={styles.info}>你好，</div>
           {!showCanvas && (
             <div className={styles.startButton}>
               <input

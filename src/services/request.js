@@ -92,7 +92,7 @@ export default function request(url, option) {
         'Access-Control-Allow-Origin':'*',
         ...newOptions.headers,
       };
-      // 以上三种方法在这里做stringify
+      // post patch delete在这里做stringify
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData

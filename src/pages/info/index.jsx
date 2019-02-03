@@ -24,7 +24,8 @@ class Info extends Component {
           <BizIcon type="bianji" />
         </div>
         <div className={style.top} />
-        <div className={style.avater} />
+        <div className={style.avater} >
+</div>
         <div className={style.cardContainer}>
           <WhiteSpace size="sm" />
           <Card className={style.card}>

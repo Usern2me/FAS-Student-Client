@@ -4,6 +4,7 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       { path: '/', component: './index/index', title: '考勤' },
+      { path: '/result', component: './index/result', title: '结果页' },
       { path: '/course', component: './course', title: '课表' },
       { path: '/info', component: './info', title: '我的' },
       { path: '/info/login', component: './info/login', title: '登陆' },
