@@ -76,7 +76,6 @@ class ResultPage extends PureComponent {
   }
   render() {
     let { status, time, class_name } = this.props.location.query
-    console.log("status--->", status)
     return (
       <div>
         {status && (

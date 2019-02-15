@@ -3,18 +3,20 @@ import { Button, NoticeBar, WhiteSpace } from "antd-mobile"
 import { connect } from "dva"
 import Router from "umi/router"
 import BizIcon from "../../components/BizIcon"
+import Loading from "@/components/Loading"
 
 import { verifyFace } from "@/services/index"
 import styles from "./index.less"
 
-@connect(({ info }) => ({ info }))
+@connect(({ info }) =>({info}))
 class Index extends Component {
   constructor(props) {
     super(props)
   }
   state = {
     front: true,
-    showCanvas: false
+    showCanvas: false,
+    isLoading: false
   }
   // 开启摄像头
   handlePhoto = async e => {
@@ -78,16 +80,17 @@ class Index extends Component {
     })
   }
   // 查看考勤记录
-  handleClick = () => {}
+  handleClick = () => {
+    Router.push(`/index/detail?id=${this.props.info.class_id}`)
+  }
 
   render() {
     const { showCanvas } = this.state
-    // const { info } = this.props
-    // const { name } = info
+    // const { info: { name} } = this.props
     return (
       <div className={styles.container}>
         <div className={styles.top}>
-          <div className={styles.info}>你好，</div>
+          <div className={styles.info}>你好</div>
           {!showCanvas && (
             <div className={styles.startButton}>
               <input
@@ -105,6 +108,11 @@ class Index extends Component {
             </div>
           )}
           <div className={styles.takePhoto}>
+            {this.state.isLoading && (
+              <div className={styles.loading}>
+                <Loading />
+              </div>
+            )}
             <div
               ref={r => {
                 this.canvas = r

@@ -16,7 +16,7 @@ export default {
           webpackChunkName: true
         },
         title: {
-          defaultTitle: "考勤系统"
+          defaultTitle: "考勤系统学生端"
         },
         dll: false,
         pwa: false,
@@ -35,7 +35,7 @@ export default {
   // https://github.com/ant-design/ant-design-mobile/blob/master/components/style/themes/default.less
   theme: {
     'brand-primary': themes.primaryColor,
-   
+
   },
   //   ignoreMomentLocale: true,
   lessLoaderOptions: {

@@ -21,6 +21,7 @@
     "qs": "^6.5.2",
     "rc-form": "^2.4.1",
     "react": "^16.5.1",
+    "react-transition-group": "^2.5.3",
     "umi": "^2.4.4",
     "umi-plugin-react": "^1.0.1"
   },
