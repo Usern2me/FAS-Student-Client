@@ -1,6 +1,6 @@
 .square {
-  width: 20px;
-  height: 20px;
+  width: 1rem;
+  height: 1rem;
   border: 1px rgba(255, 255, 255, 1) solid;
   margin: 36px auto;
   position: relative;
@@ -21,42 +21,25 @@
   animation: square_check 1s ease-in-out infinite;
 }
 
-@-webkit-keyframes square_check {
-  25% {
-    left: 22px;
-    top: -8px;
-  }
-  50% {
-    left: 22px;
-    top: 22px;
-  }
-  75% {
-    left: -9px;
-    top: 22px;
-  }
-  100% {
-    left: -9px;
-    top: -7px;
-  }
-}
 @keyframes square_check {
   25% {
-    left: 22px;
-    top: -8px;
+    left: 1.1rem;
+    top: -12px;
   }
   50% {
-    left: 22px;
-    top: 22px;
+    left: 1.1rem;
+    top: 1.1rem;
   }
   75% {
-    left: -9px;
-    top: 22px;
+    left: -13px;
+    top: 1.1rem;
   }
   100% {
-    left: -9px;
-    top: -7px;
+    left: -13px;
+    top: -12px;
   }
 }
+
 @-webkit-keyframes fill_color {
   0% {
     box-shadow: inset 0px 0px 0px 0px rgba(255, 255, 255, 0.1);
@@ -71,6 +54,6 @@
     box-shadow: inset 0px 0px 0px 0px rgba(255, 255, 255, 0.1);
   }
   100% {
-    box-shadow: inset 0px -20px 0px 0px rgba(255, 255, 255, 1);
+    box-shadow: inset 0px -1rem 0px 0px rgba(255, 255, 255, 1);
   }
 }

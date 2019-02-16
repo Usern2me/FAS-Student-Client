@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react"
-import { Result, Icon, WhiteSpace } from "antd-mobile"
+import { Result, WhiteSpace } from "antd-mobile"
 
 import style from "./index.less"
 import Router from "umi/router"
@@ -18,7 +18,7 @@ const SuccessIcon = () => {
         r="62.1"
       />
       <polyline
-        className={[style.spath, style.check]}
+        className={[style.path, style.check]}
         fill="none"
         stroke="#73AF55"
         strokeWidth="6"
@@ -78,7 +78,7 @@ class ResultPage extends PureComponent {
     let { status, time, class_name } = this.props.location.query
     return (
       <div>
-        {status && (
+        {status==1 && (
           <div className={style.resultContainer}>
             <Result img={<SuccessIcon />} title="考勤成功" message="您已完成考勤" />
             <span className={style.info}>
@@ -87,9 +87,21 @@ class ResultPage extends PureComponent {
             </span>
             <WhiteSpace />
             <span className={style.info}>
-              课程名称：
+              班级名称：
               {class_name}
             </span>
+            <WhiteSpace />
+            <a
+              onClick={() => {
+                Router.push("/")
+              }}>
+              返回主页
+            </a>
+          </div>
+        )}
+        {status==0 && (
+          <div className={style.resultContainer}>
+            <Result img={<FailIcon />} title="考勤失败" message="请重新考勤" />
             <WhiteSpace />
             <a
               onClick={() => {
@@ -100,9 +112,19 @@ class ResultPage extends PureComponent {
             <WhiteSpace />
           </div>
         )}
-        {!status && (
-          <div classNmae={style.resultContainer}>
-            <Result img={<FailIcon />} title="考勤失败" message="请重新考勤" />
+        {status==2 && (
+          <div className={style.resultContainer}>
+            <Result img={<SuccessIcon />} title="考勤成功" message="延迟签到 请下次准时签到哦" />
+            <WhiteSpace />
+            <span className={style.info}>
+              时间：
+              {time}
+            </span>
+            <WhiteSpace />
+            <span className={style.info}>
+              班级名称：
+              {class_name}
+            </span>
             <WhiteSpace />
             <a
               onClick={() => {
@@ -110,7 +132,6 @@ class ResultPage extends PureComponent {
               }}>
               返回主页
             </a>
-            <WhiteSpace />
           </div>
         )}
       </div>

@@ -5,10 +5,11 @@ import Router from "umi/router"
 import BizIcon from "../../components/BizIcon"
 import Loading from "@/components/Loading"
 
-import { verifyFace } from "@/services/index"
+import { verifyFace, addStuAttendance, getStuAttendance } from "@/services"
 import styles from "./index.less"
+import { getDate, timeDiff } from "@/util/index"
 
-@connect(({ info }) =>({info}))
+@connect(({ info }) => ({ info }))
 class Index extends Component {
   constructor(props) {
     super(props)
@@ -16,13 +17,35 @@ class Index extends Component {
   state = {
     front: true,
     showCanvas: false,
-    isLoading: false
+    isLoading: false,
+    isOpen: false,
+    date: getDate("Y-M-D"),
+    attendanceInfo: []
   }
+
+  componentDidMount() {
+    // const time = getDate("H:Mi")
+    // const { date } = this.state
+    // const { stu_id } = this.props.info
+    const stu_id = 1501
+    const param = {
+      stu_id,
+      date: "2019-2-14",
+      time: "17:43"
+    }
+    // 获取当前时间的前后20分钟的考勤记录
+    getStuAttendance(param).then(res => {
+      this.setState({ attendanceInfo: res.data[0] })
+      if (res.data.length != 0) {
+        this.setState({ isOpen: true })
+      }
+    })
+  }
+
   // 开启摄像头
   handlePhoto = async e => {
     this.setState({ showCanvas: true })
 
-    // 有没有更好的解决办法？？
     let that = this
     let file = e.target.files[0]
     let reader = new FileReader()
@@ -34,10 +57,10 @@ class Index extends Component {
     reader.onload = function(e) {
       img.src = e.target.result
       img.onload = function() {
-        canvas.width = 1000
-        canvas.height = 1000
+        canvas.width = 1200
+        canvas.height = 1100
         canvasContext.rotate((270 * Math.PI) / 180)
-        canvasContext.drawImage(img, -1200, 0, 1200, 800)
+        canvasContext.drawImage(img, -1200, 0, 1400, 900)
 
         imgObj.insertBefore(canvas, imgObj.childNodes[0])
 
@@ -59,25 +82,49 @@ class Index extends Component {
   handleUpload = async img => {
     const { info } = this.props
     const { class_id, stu_id } = info
+    const { attendance_id, time, duration } = this.state.attendanceInfo
+    let router_query = {
+      pathname: "/result",
+      query: {
+        status: 0
+      }
+    }
+    this.setState({ isLoading: true })
     await verifyFace({ group_id: class_id, uid: stu_id, img: img }).then(res => {
+      // 如果返回了考勤通过的信息 写入数据库
       if (res.code == 0 && res.data.face_token) {
-        Router.push({
-          pathname: "/result",
+        const { date } = this.state
+        const nowTime = getDate("H:Mi")
+        // 合并信息
+        Object.assign(router_query, {
           query: {
-            status: true,
+            status: 1,
             class_name: this.props.info.class_name,
-            time: Date.now()
+            time: nowTime
           }
         })
-      } else {
-        Router.push({
-          pathname: "/result",
-          query: {
-            status: false
-          }
+        // 判断时间是否超过duration 超过设置状态为2-->迟到
+        if (timeDiff(nowTime, time) > duration) {
+          Object.assign(router_query, {
+            query: {
+              status: 2,
+              class_name: this.props.info.class_name,
+              time: nowTime
+            }
+          })
+        }
+        addStuAttendance({
+          stu_id: stu_id,
+          attendance_id,
+          time: time,
+          date: date,
+          status: router_query.status,
+          face: 1
         })
       }
     })
+    this.setState({ isLoading: false })
+    Router.push(router_query)
   }
   // 查看考勤记录
   handleClick = () => {
@@ -85,12 +132,11 @@ class Index extends Component {
   }
 
   render() {
-    const { showCanvas } = this.state
+    const { showCanvas, isOpen } = this.state
     // const { info: { name} } = this.props
     return (
       <div className={styles.container}>
         <div className={styles.top}>
-          <div className={styles.info}>你好</div>
           {!showCanvas && (
             <div className={styles.startButton}>
               <input
@@ -111,6 +157,7 @@ class Index extends Component {
             {this.state.isLoading && (
               <div className={styles.loading}>
                 <Loading />
+                照片上传中...
               </div>
             )}
             <div
@@ -118,13 +165,8 @@ class Index extends Component {
                 this.canvas = r
               }}
               className={styles.canvas}
-              style={{ visibility: showCanvas ? "visible" : "hidden" }}>
-              <div>
-                <Button type="primary" inline onClick={this.handleReDraw}>
-                  重拍
-                </Button>
-              </div>
-            </div>
+              style={{ visibility: showCanvas ? "visible" : "hidden" }}
+            />
           </div>
         </div>
         <div className={styles.content}>
@@ -137,12 +179,14 @@ class Index extends Component {
           </Button>
         </div>
         <WhiteSpace size="lg" />
-        <NoticeBar
-          mode="closable"
-          marqueeProps={{ loop: true, style: { padding: "0 7.5px" } }}
-          action={<span style={{ color: "#a1a1a1" }}>不再提示</span>}>
-          注意：你有一场考勤正在进行！
-        </NoticeBar>
+        {isOpen && (
+          <NoticeBar
+            mode="closable"
+            marqueeProps={{ loop: true, style: { padding: "0 7.5px" } }}
+            action={<span style={{ color: "#a1a1a1" }}>不再提示</span>}>
+            注意：你有一场考勤正在进行！
+          </NoticeBar>
+        )}
       </div>
     )
   }

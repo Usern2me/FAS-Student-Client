@@ -13,3 +13,4 @@
    复杂请求的 OPTIONS 请求里浏览器先发 origin 和 access-control-request-headers 和请求方法，然后服务端回复已经设置好的请求的方法和 acao，max-age 之类，状态码为 204。第二次就可以开始正式请求。
 4. 图片转 base64 太大，在后端的 app.use 里使用 bodyParse 的时候传入一下参数，调整大小，默认是 1m
 5. class的方法里面this指向undefined?? this.fn提示找不到这个方法，在构造函数里Bind也没用，解决办法，在class外面变量声明声明函数，class里面的函数直接用方法变量名调用。
+  

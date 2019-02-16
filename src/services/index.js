@@ -1,8 +1,6 @@
 /*
- * 接口统一通过index暴漏出去
+ * 接口统一通过index暴露出去
  */
-
-export * from './module/mall';
 
 export * from './module/user';
 export * from './module/school';
