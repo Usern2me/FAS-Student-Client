@@ -128,7 +128,7 @@ class Index extends Component {
   }
   // 查看考勤记录
   handleClick = () => {
-    Router.push(`/index/detail?id=${this.props.info.class_id}`)
+    Router.push(`/index/detail?id=${this.props.info.stu_id}`)
   }
 
   render() {

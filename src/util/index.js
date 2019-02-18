@@ -100,4 +100,12 @@ function timeDiff(a, b) {
   return Hour*60+Min
 }
 
-export { getDate, timeDiff }
+const pick=(obj, keys)=>{
+  const r = {};
+  keys.forEach((key) => {
+    r[key] = obj[key];
+  });
+  return r;
+};
+
+export { getDate, timeDiff, pick }

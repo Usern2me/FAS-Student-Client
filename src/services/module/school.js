@@ -21,3 +21,21 @@ export async function getClass(params) {
 export async function getClassTable(params) {
   return request(`${host}/api/classtable?${stringify(params)}`)
 }
+
+// 获取学生当天考勤信息
+export async function getStuAttendance(params) {
+  return request(`${host}/api/getStuAttendance?${stringify(params)}`)
+}
+//添加学生考勤记录
+export async function addStuAttendance(params) {
+  return request(`${host}/api/addStuAttendance`, { method: "POST", body: params })
+}
+// 获取学生折线图数据
+export async function getLineChartOfStudent(params) {
+  return request(`${host}/api/getLineChartOfStudent?${stringify(params)}`)
+}
+
+// 获取学生日历考勤数据
+export async function getCalendarOfStudent(params) {
+  return request(`${host}/api/getCalendarOfStudent?${stringify(params)}`)
+}
