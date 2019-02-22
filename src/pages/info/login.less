@@ -4,19 +4,27 @@
   position:relative;
   text-align: center;
   font-size:20px;
+  background:url('@/assets/loginBg.jpg') no-repeat;
+  background-size: cover;
+  background-position:center;
 }
 .loginFlex{
   position: absolute;
-  border:1px solid #7A00BF;
-  border-radius: 2%;
+  border-radius: 10px;
   width:80%;
-  height: fit-content;
+  height: 5.4rem;
   top:0;
   bottom:0;
   right:0;
   left:0;
   margin:auto;
-  box-shadow:2px 2px 2px 2px #eee;
+  background-color: white;
+  box-shadow:5px 5px 10px rgb(231, 228, 228);
+  .title{
+    font-size: 40px;
+    font-weight: 600;
+    margin:20px auto;
+  }
 }
 .loginInput{
   border-bottom:2px #F6D7EB;
@@ -27,9 +35,9 @@
   background-color:#F6D7EB;
 }
 .loginLink{
-  border:1px solid;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   color:#5365A2;
+  border-bottom: 2px dotted darkcyan;
 }

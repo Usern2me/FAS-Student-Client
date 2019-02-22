@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react"
 import Router from "umi/router"
 import { connect } from "dva"
-import { List, InputItem, WhiteSpace, NavBar, Icon, Button, Picker, Toast } from "antd-mobile"
+import { List, InputItem, WhiteSpace, NavBar, Icon, Button, Toast } from "antd-mobile"
 import { createForm, createFormField } from "rc-form"
 import styles from "./edit.less"
 import { updateInfo } from "@/services"
@@ -56,7 +56,7 @@ class Edit extends PureComponent {
     const { getFieldProps } = this.props.form
     return (
       <div className={styles.registerContainer}>
-        <NavBar mode="light" icon={<Icon type="left" />} onLeftClick={() => Router.push("/info")}>
+        <NavBar mode="dark" icon={<Icon type="left" />} onLeftClick={() => Router.push("/info")}>
           编辑信息
         </NavBar>
         <div className={styles.list}>

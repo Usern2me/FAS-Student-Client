@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { List, Flex, InputItem, WhiteSpace, Button, Toast } from "antd-mobile"
 import style from "./login.less"
+import BizIcon from "../../components/BizIcon"
+
 import Router from "umi/router"
 import { userLogin } from "@/services"
 
@@ -39,45 +41,31 @@ class Login extends Component {
     return (
       <div className={style.loginContainer}>
         <div className={style.loginFlex}>
-          <WhiteSpace size="lg" />
-          <Flex>
-            <Flex.Item>
-              <List>
-                <InputItem clear ref={el => (this.idRef = el)} className={style.loginInput}>
-                  学号：
-                </InputItem>
-              </List>
-            </Flex.Item>
-          </Flex>
-          <WhiteSpace size="lg" />
-          <Flex>
-            <Flex.Item>
-              <List>
-                <InputItem clear ref={el => (this.pwdRef = el)} className={style.loginInput}>
-                  密码：
-                </InputItem>
-              </List>
-            </Flex.Item>
-          </Flex>
-          <WhiteSpace size="lg" />
-          <Flex>
-            <Flex.Item>
+          <div className={style.title}>登陆</div>
+          <List>
+            <List.Item thumb={<BizIcon type="user" />}>
+              <InputItem clear ref={el => (this.idRef = el)} className={style.loginInput}>
+                学号：
+              </InputItem>
+            </List.Item>
+            <List.Item thumb={<BizIcon type="dingzhi" />}>
+              <InputItem clear ref={el => (this.pwdRef = el)} className={style.loginInput}>
+                密码：
+              </InputItem>
+            </List.Item>
+            <List.Item>
               <Button
                 loading={this.state.loading}
                 onClick={this.login}
                 className={style.loginSubmit}>
                 登陆
               </Button>
-            </Flex.Item>
-          </Flex>
+            </List.Item>
+          </List>
           <WhiteSpace size="lg" />
-          <Flex>
-            <Flex.Item>
-              <a onClick={() => Router.push("/info/register")} className={style.loginLink}>
-                没有账号？前往注册
-              </a>
-            </Flex.Item>
-          </Flex>
+          <a onClick={() => Router.push("/info/register")} className={style.loginLink}>
+            没有账号？前往注册
+          </a>
           <WhiteSpace size="lg" />
         </div>
       </div>

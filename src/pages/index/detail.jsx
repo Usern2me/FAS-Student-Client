@@ -5,6 +5,7 @@ import Router from "umi/router"
 import LineChart from "./component/lineChart"
 import Calendar from "./component/calendar"
 
+import style from './index.less'
 import echarts from "echarts"
 import { getCalendarOfStudent } from "@/services"
 
@@ -46,7 +47,7 @@ export default class Detail extends Component {
   render() {
     const { id } = this.props.location.query
     return (
-      <div>
+      <div className={style.detailContainer}>
         <NavBar mode="dark" icon={<Icon type="left" />} onLeftClick={() => Router.push("/")}>
           考勤详情页
         </NavBar>

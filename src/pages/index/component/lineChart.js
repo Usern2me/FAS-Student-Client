@@ -38,9 +38,11 @@ export default class LineChart extends Component {
   getOption = () => {
     return {
       title: {
-        text: "学生考勤记录",
+        text: "最近一周考勤记录",
+        top: '2%',
+        left:'2%',
         textStyle: {
-          fontSize: 40
+          fontSize: 45
         }
       },
       tooltip: {
@@ -57,7 +59,7 @@ export default class LineChart extends Component {
           params.map(v => {
             let h = parseInt(v.value / 100)
             let m = v.value % 100 === 0 ? "00" : v.value % 100
-            let strItem = `<p>${colorSpan(v.color)}${v.seriesName}-> ${h}:${m}</p>`
+            let strItem = `<p>${colorSpan(v.color)}${v.seriesName} ${h}:${m}</p>`
             rez += strItem
           })
           return rez
@@ -65,6 +67,7 @@ export default class LineChart extends Component {
       },
       legend: {
         data: ["上午", "下午"],
+        top: '5%',
         textStyle: {
           fontSize: 40
         }
@@ -76,7 +79,7 @@ export default class LineChart extends Component {
         top: "15%",
         containLabel: true
       },
-      xAxis: [
+      xAxis:
         {
           type: "category",
           boundaryGap: false,
@@ -84,13 +87,14 @@ export default class LineChart extends Component {
           // x轴的字体样式
           axisLabel: {
             show: true,
+            margin:14,
             textStyle: {
               color: "#40514e",
               fontSize: "30"
             }
           }
         }
-      ],
+      ,
       yAxis: [
         {
           type: "value",
@@ -146,11 +150,11 @@ export default class LineChart extends Component {
         colorStops: [
           {
             offset: 0,
-            color: "#fff1eb" // 0% 处的颜色
+            color: "#eee" // 0% 处的颜色
           },
           {
             offset: 1,
-            color: "#c3cfe2" // 100% 处的颜色
+            color: "#f3e7e9" // 100% 处的颜色
           }
         ],
         global: false // 缺省为 false

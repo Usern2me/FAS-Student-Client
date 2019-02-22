@@ -50,24 +50,7 @@ export default class Calendar extends PureComponent {
           data: this.props.seriesData
         }
       ],
-      backgroundColor: {
-        type: "linear",
-        x: 0.1,
-        y: 0.5,
-        x2: 0.5,
-        y2: 1,
-        colorStops: [
-          {
-            offset: 0,
-            color: "#f3e7e9" // 0% 处的颜色
-          },
-          {
-            offset: 1,
-            color: "#c3cfe2" // 100% 处的颜色
-          }
-        ],
-        global: false // 缺省为 false
-      }
+
     }
   }
 
@@ -144,7 +127,7 @@ export default class Calendar extends PureComponent {
           option={this.getOption()}
           showLoading={true}
           onChartReady={this.onChartReady}
-          style={{ height: "1200px", width: "100%" }}
+          style={{ height: "1050px", width: "100%" }}
           className="react_for_echarts"
         />
       </div>

@@ -26,6 +26,12 @@ export async function getClassTable(params) {
 export async function getStuAttendance(params) {
   return request(`${host}/api/getStuAttendance?${stringify(params)}`)
 }
+
+// 获取学生是否考勤
+export async function getStuAttendanceStatus(params) {
+  return request(`${host}/api/getStuAttendanceStatus?${stringify(params)}`)
+}
+
 //添加学生考勤记录
 export async function addStuAttendance(params) {
   return request(`${host}/api/addStuAttendance`, { method: "POST", body: params })

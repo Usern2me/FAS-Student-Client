@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { Flex, Card, List, InputItem } from "antd-mobile"
 import FlexBox from "@/components/FlexBox"
+import BizIcon from "../../components/BizIcon"
+
 import { connect } from "dva"
 import { getClassTable } from "@/services"
 import style from "./index.less"
@@ -112,7 +114,10 @@ class Course extends Component {
           </div>
         </div>
         <Card>
-          <Card.Header title={course_name || "点击查看课程信息"} />
+          <Card.Header
+          title={course_name || "点击查看课程信息"}
+          thumb={<BizIcon type="connectdevelop" />}
+          />
           <Card.Body>
             <List>
               <InputItem editable="false" value={classroom_id}>

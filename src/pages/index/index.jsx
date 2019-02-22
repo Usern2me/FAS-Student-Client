@@ -1,11 +1,11 @@
 import React, { Component } from "react"
-import { Button, NoticeBar, WhiteSpace } from "antd-mobile"
+import { Button, NoticeBar, WhiteSpace, Toast } from "antd-mobile"
 import { connect } from "dva"
 import Router from "umi/router"
 import BizIcon from "../../components/BizIcon"
 import Loading from "@/components/Loading"
 
-import { verifyFace, addStuAttendance, getStuAttendance } from "@/services"
+import { verifyFace, addStuAttendance, getStuAttendance, getStuAttendanceStatus } from "@/services"
 import styles from "./index.less"
 import { getDate, timeDiff } from "@/util/index"
 
@@ -20,7 +20,8 @@ class Index extends Component {
     isLoading: false,
     isOpen: false,
     date: getDate("Y-M-D"),
-    attendanceInfo: []
+    attendanceInfo: [],
+    status: 0
   }
 
   componentDidMount() {
@@ -35,9 +36,14 @@ class Index extends Component {
     }
     // 获取当前时间的前后20分钟的考勤记录
     getStuAttendance(param).then(res => {
-      this.setState({ attendanceInfo: res.data[0] })
       if (res.data.length != 0) {
-        this.setState({ isOpen: true })
+        this.setState({ attendanceInfo: res.data[0] })
+        const { attendance_id } = res.data[0]
+        getStuAttendanceStatus({ stu_id, attendance_id, date: param.date }).then(res => {
+          if (res.data.status) {
+            this.setState({ status: Number(res.data.status) })
+          }
+        })
       }
     })
   }
@@ -132,8 +138,7 @@ class Index extends Component {
   }
 
   render() {
-    const { showCanvas, isOpen } = this.state
-    // const { info: { name} } = this.props
+    const { showCanvas, status } = this.state
     return (
       <div className={styles.container}>
         <div className={styles.top}>
@@ -143,6 +148,7 @@ class Index extends Component {
                 type="file"
                 accept="image/*"
                 capture="user"
+                disabled={status !== 0}
                 ref={input => {
                   this.myCameraInput = input
                 }}
@@ -171,7 +177,7 @@ class Index extends Component {
         </div>
         <div className={styles.content}>
           <Button
-            type="primary"
+            type="ghost"
             size="large"
             style={{ width: "80%", margin: "0 auto" }}
             onClick={this.handleClick}>
@@ -179,12 +185,17 @@ class Index extends Component {
           </Button>
         </div>
         <WhiteSpace size="lg" />
-        {isOpen && (
+        {status === 0 && (
           <NoticeBar
             mode="closable"
             marqueeProps={{ loop: true, style: { padding: "0 7.5px" } }}
             action={<span style={{ color: "#a1a1a1" }}>不再提示</span>}>
             注意：你有一场考勤正在进行！
+          </NoticeBar>
+        )}
+        {status !== 0 && (
+          <NoticeBar mode="closable" icon={<BizIcon type="child" />}>
+            恭喜，你已完成本节课的考勤！
           </NoticeBar>
         )}
       </div>

@@ -8,20 +8,20 @@ import theme from "@/theme"
 const tabBarData = [
   {
     title: "考勤",
-    icon: "shouye_line",
-    selectedIcon: "shouye_line",
+    icon: "home",
+    selectedIcon: "home",
     link: "/"
   },
   {
     title: "课表",
-    icon: "shichangjia_line",
-    selectedIcon: "shichangjia_line",
+    icon: "paike",
+    selectedIcon: "paike",
     link: "/course"
   },
   {
     title: "我的",
-    icon: "wode_line",
-    selectedIcon: "wode_line",
+    icon: "wode",
+    selectedIcon: "wode",
     link: "/info"
   }
 ]

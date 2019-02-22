@@ -6,11 +6,11 @@
 
 .top {
   border: 1px solid transparent;
-  height: 2.2rem;
+  height: 4.2rem;
   position: relative;
   width: 100%;
-  background: linear-gradient(240deg, #75489f, #f0027f);
-  border-bottom: 10px ridge rgb(170, 50, 220, 0.3);
+  background-image: url('@/assets/infoBg.jpg');
+  background-size: cover;
 }
 
 .avater {
@@ -22,7 +22,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 1.5rem;
+  top: 1.8rem;
   margin: 0 auto;
 
   background: url("../../assets/avater.png") no-repeat;
@@ -33,29 +33,25 @@
 }
 .cardContainer {
   overflow: hidden;
+  position: relative;
+  top: -1.6rem;
+  box-shadow: 5px 5px 10px whitesmoke;
 }
 .card {
   width: 100%;
-  .content {
-    // font-size: 20px !important;
-  }
-}
-.list_item .am-list-item {
-  font-size: 20px;
 }
 
 .edit {
-  border: 1px solid purple;
-  background-color: aquamarine;
+  background-image: linear-gradient(-225deg, #A8BFFF 0%, #884D80 100%);
   height: 1rem;
   width: 1rem;
   border-radius: 50%;
   position: fixed;
-  bottom: 1.3rem;
+  bottom: 1.1rem;
   right: 0.4rem;
   i {
-    font-size: 75px;
-    color: rosybrown;
+    font-size: 60px;
+    color: white;
     position: absolute;
     top: 50%;
     left: 50%;
