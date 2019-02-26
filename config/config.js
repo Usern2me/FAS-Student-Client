@@ -34,12 +34,15 @@ export default {
   // Theme for antd-mobile
   // https://github.com/ant-design/ant-design-mobile/blob/master/components/style/themes/default.less
   theme: {
-    'brand-primary': themes.primaryColor,
-
+    "brand-primary": themes.primaryColor
   },
   //   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true
+  },
+  cssLoaderOptions: {
+    test: /\.css$/,
+    use: ["to-string-loader", "css-loader"]
   },
   cssnano: {
     mergeRules: false

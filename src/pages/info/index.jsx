@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "dva"
 import { Card, WhiteSpace, List, WingBlank } from "antd-mobile"
-import BizIcon from "../../components/BizIcon"
 import Router from "umi/router"
+import BizIcon from "@/components/BizIcon"
+import Cropper from "@/components/Cropper"
 
 import style from "./index.less"
 
@@ -15,6 +16,9 @@ class Info extends Component {
   handleEdit = () => {
     Router.push("/info/edit")
   }
+  onUploadedFile = data => {
+    console.log("onUploadedFile--->", data)
+  }
   render() {
     // 传进来的state当做props用
     const { info } = this.props
@@ -24,15 +28,14 @@ class Info extends Component {
           <BizIcon type="edit" />
         </div>
         <div className={style.top} />
-        <div className={style.avater} />
+        <div className={style.avater}>
+          <Cropper onUploadedFile={this.onUploadedFile} />
+        </div>
         <WingBlank size="lg">
           <div className={style.cardContainer}>
             <Card className={style.card}>
-              <Card.Header
-                title={info.name}
-                thumb={<BizIcon type="reddit1" />}
-              />
-              <WhiteSpace/>
+              <Card.Header title={info.name} thumb={<BizIcon type="reddit1" />} />
+              <WhiteSpace />
               <Card.Body>
                 <List>
                   <List.Item thumb={<BizIcon type="user" />}>
