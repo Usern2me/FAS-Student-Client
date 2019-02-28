@@ -6,7 +6,7 @@ import { connect } from "dva"
 
 import { TransitionGroup, CSSTransition } from "react-transition-group"
 import "@/layouts/nprogress.less"
-import style from "./basicLayout.less"
+import "./basicLayout.less"
 
 // 进度条
 NProgress.configure({ showSpinner: false })

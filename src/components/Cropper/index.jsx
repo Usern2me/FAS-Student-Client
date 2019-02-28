@@ -54,16 +54,18 @@ export default class Cropper extends Component {
   // 传图片给服务器
   handleSubmit = () => {
     if (!this.state.isLoading) {
-      let fileName = "picName"
+      let fileName = "1501-avator"
       // 转成blob二进制传给服务器
       this.cropper.getCroppedCanvas().toBlob(async blob => {
         const formData = new FormData()
         formData.append("file", blob, fileName)
         this.setState({ isLoading: true })
-        const stu_id = 1501
-        const res = await uploadAvator({ stu_id, img: formData })
-        this.props.onUploadedFile(res.data)
-        console.log("upload img--->", res)
+        const res = await uploadAvator({ data: formData })
+        console.log('res',res)
+        this.props.onUploadedFile(res.code)
+        if (res.code == 0) {
+          this.setState({ ModalVisible:false})
+        }
         this.setState({ isLoading: false })
       })
     }

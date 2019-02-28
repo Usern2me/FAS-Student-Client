@@ -1,57 +1,57 @@
-
-import fetch from 'dva/fetch';
-import router from 'umi/router';
-import hash from 'hash.js';
+import fetch from "dva/fetch"
+import router from "umi/router"
+import hash from "hash.js"
+import { Stream } from "stream"
 
 const codeMessage = {
-  200: '服务器成功返回请求的数据。',
-  201: '新建或修改数据成功。',
-  202: '一个请求已经进入后台排队（异步任务）。',
-  204: '删除数据成功。',
-  400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
-  403: '用户得到授权，但是访问是被禁止的。',
-  404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-  406: '请求的格式不可得。',
-  410: '请求的资源被永久删除，且不会再得到的。',
-  422: '当创建一个对象时，发生一个验证错误。',
-  500: '服务器发生错误，请检查服务器。',
-  502: '网关错误。',
-  503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
-};
+  200: "服务器成功返回请求的数据。",
+  201: "新建或修改数据成功。",
+  202: "一个请求已经进入后台排队（异步任务）。",
+  204: "删除数据成功。",
+  400: "发出的请求有错误，服务器没有进行新建或修改数据的操作。",
+  401: "用户没有权限（令牌、用户名、密码错误）。",
+  403: "用户得到授权，但是访问是被禁止的。",
+  404: "发出的请求针对的是不存在的记录，服务器没有进行操作。",
+  406: "请求的格式不可得。",
+  410: "请求的资源被永久删除，且不会再得到的。",
+  422: "当创建一个对象时，发生一个验证错误。",
+  500: "服务器发生错误，请检查服务器。",
+  502: "网关错误。",
+  503: "服务不可用，服务器暂时过载或维护。",
+  504: "网关超时。"
+}
 
 const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
-    return response;
+    return response
   }
-  const errortext = codeMessage[response.status] || response.statusText;
+  const errortext = codeMessage[response.status] || response.statusText
   // Toast.offline(`请求错误 ${response.status}: ${response.url},${errortext}`);
 
-  const error = new Error(errortext);
-  error.name = response.status;
-  error.response = response;
-  throw error;
-};
+  const error = new Error(errortext)
+  error.name = response.status
+  error.response = response
+  throw error
+}
 
 const cachedSave = (response, hashcode) => {
   /**
    * 拷贝相应的数据并保存在 sessionStorage 里
    * 只支持 json
    */
-  const contentType = response.headers.get('Content-Type');
+  const contentType = response.headers.get("Content-Type")
   if (contentType && contentType.match(/application\/json/i)) {
     // All data is saved as text
     response
       .clone()
       .text()
       .then(content => {
-        sessionStorage.setItem(hashcode, content);
-        sessionStorage.setItem(`${hashcode}:timestamp`, Date.now());
-      });
+        sessionStorage.setItem(hashcode, content)
+        sessionStorage.setItem(`${hashcode}:timestamp`, Date.now())
+      })
   }
-  return response;
-};
+  return response
+}
 
 /**
  * 请求一个 URL, 返回一个 promise.
@@ -63,60 +63,60 @@ const cachedSave = (response, hashcode) => {
 export default function request(url, option) {
   const options = {
     expirys: true,
-    ...option,
-  };
+    ...option
+  }
   /**
    * Produce fingerprints based on url and parameters
    * Maybe url has the same parameters
    */
-  const fingerprint = url + (options.body ? JSON.stringify(options.body) : '');
+  const fingerprint = url + (options.body ? JSON.stringify(options.body) : "")
   // 数据加密
   const hashcode = hash
     .sha256()
     .update(fingerprint)
-    .digest('hex');
+    .digest("hex")
 
   const defaultOptions = {
     // credentials: 'include',
-  };
-  const newOptions = { ...defaultOptions, ...options };
+  }
+  const newOptions = { ...defaultOptions, ...options }
   if (
-    newOptions.method === 'POST' ||
-    newOptions.method === 'PATCH' ||
-    newOptions.method === 'DELETE'
+    newOptions.method === "POST" ||
+    newOptions.method === "PATCH" ||
+    newOptions.method === "DELETE"
   ) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset=utf-8',
-        'Access-Control-Allow-Origin':'*',
-        ...newOptions.headers,
-      };
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        ...newOptions.headers
+      }
       // post patch delete在这里做stringify
-      newOptions.body = JSON.stringify(newOptions.body);
+      newOptions.body = JSON.stringify(newOptions.body)
     } else {
       // newOptions.body is FormData
       newOptions.headers = {
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin':'*',
-        ...newOptions.headers,
-      };
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+        ...newOptions.headers
+      }
     }
   }
 
-  const expirys = options.expirys && 10;
+  const expirys = options.expirys && 10
   // options.expirys !== false, return the cache,
   if (options.expirys !== false) {
-    const cached = sessionStorage.getItem(hashcode);
-    const whenCached = sessionStorage.getItem(`${hashcode}:timestamp`);
+    const cached = sessionStorage.getItem(hashcode)
+    const whenCached = sessionStorage.getItem(`${hashcode}:timestamp`)
     if (cached !== null && whenCached !== null) {
-      const age = (Date.now() - whenCached) / 1000;
+      const age = (Date.now() - whenCached) / 1000
       if (age < expirys) {
-        const response = new Response(new Blob([cached]));
-        return response.json();
+        const response = new Response(new Blob([cached]))
+        return response.json()
       }
-      sessionStorage.removeItem(hashcode);
-      sessionStorage.removeItem(`${hashcode}:timestamp`);
+      sessionStorage.removeItem(hashcode)
+      sessionStorage.removeItem(`${hashcode}:timestamp`)
     }
   }
   return fetch(url, newOptions)
@@ -125,25 +125,32 @@ export default function request(url, option) {
     .then(response => {
       // DELETE and 204 do not return data by default
       // using .json will report an error.
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
+      if (newOptions.method === "DELETE" || response.status === 204) {
+        return response.text()
       }
-      return response.json();
+      // 单独提取图片和头像的请求 不做json处理
+      if (response.url.match(/getUserAvator+/i)) {
+        if (response.code) {
+          console.log('222')
+          return []
+        } else return response
+      }
+      return response.json()
     })
     .catch(e => {
-      const status = e.name;
+      const status = e.name
 
       // environment should not be used
       if (status === 403) {
-        router.push('/exception/403');
-        return;
+        router.push("/exception/403")
+        return
       }
       if (status <= 504 && status >= 500) {
-        router.push('/exception/500');
-        return;
+        router.push("/exception/500")
+        return
       }
       if (status >= 404 && status < 422) {
-        router.push('/exception/404');
+        router.push("/exception/404")
       }
-    });
+    })
 }

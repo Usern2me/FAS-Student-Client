@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "dva"
-import { Card, WhiteSpace, List, WingBlank } from "antd-mobile"
+import { Card, WhiteSpace, List, WingBlank, Toast } from "antd-mobile"
 import Router from "umi/router"
+import { getUserAvator } from "@/services"
+import avator from "../../assets/avator.png"
 import BizIcon from "@/components/BizIcon"
 import Cropper from "@/components/Cropper"
 
@@ -13,11 +15,32 @@ class Info extends Component {
   constructor(props) {
     super(props)
   }
+  async componentDidMount() {
+    await getUserAvator({ stu_id: 1501 })
+      .then(response => {
+        if (response) {
+          return response.blob()
+        } else {
+          throw new Error("用户头像不存在")
+        }
+      }) //转blob格式
+      .then(blob => {
+        const urlCreator = window.URL || window.webkitURL
+        this.imgRef.src = urlCreator.createObjectURL(blob)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
   handleEdit = () => {
     Router.push("/info/edit")
   }
   onUploadedFile = data => {
-    console.log("onUploadedFile--->", data)
+    if (data == 0) {
+      Toast.success("上传头像成功!", 0.7)
+    } else {
+      Toast.fail("上传头像失败，请重新上传", 0.7)
+    }
   }
   render() {
     // 传进来的state当做props用
@@ -29,6 +52,13 @@ class Info extends Component {
         </div>
         <div className={style.top} />
         <div className={style.avater}>
+          <img
+            src={avator}
+            alt="avator"
+            ref={el => {
+              this.imgRef = el
+            }}
+          />
           <Cropper onUploadedFile={this.onUploadedFile} />
         </div>
         <WingBlank size="lg">

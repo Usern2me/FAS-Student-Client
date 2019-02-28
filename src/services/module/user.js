@@ -19,6 +19,15 @@ export async function updateInfo(params) {
 export async function userRegister(params) {
   return request(`${host}/api/student`, { method: "POST", body: params })
 }
+// 上传用户头像 POST form-data
+export async function uploadAvator(params) {
+  return request(`${host}/api/uploadAvator`, { method: "POST", body: params.data})
+}
+// 获取用户头像 POST form-data
+export async function getUserAvator(params) {
+  return request(`${host}/api/getUserAvator`, { method: "POST", body: params })
+}
+
 // 学生登录
 export async function userLogin(params) {
   let { id, pwd } = params
