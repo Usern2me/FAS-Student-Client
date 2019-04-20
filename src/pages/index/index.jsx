@@ -21,18 +21,23 @@ class Index extends Component {
     isOpen: false,
     date: getDate("Y-M-D"),
     attendanceInfo: [],
-    status: 0
+    status: -1
   }
 
   componentDidMount() {
-    // const time = getDate("H:Mi")
-    // const { date } = this.state
+    const time = getDate("H:Mi")
+    const { date } = this.state
     // const { stu_id } = this.props.info
     const stu_id = 1501
+    // const param = {
+    //   stu_id,
+    //   date: "2019-2-14",
+    //   time: "17:43"
+    // }
     const param = {
       stu_id,
-      date: "2019-2-14",
-      time: "17:43"
+      date,
+      time
     }
     // 获取当前时间的前后20分钟的考勤记录
     getStuAttendance(param).then(res => {
@@ -42,6 +47,7 @@ class Index extends Component {
         getStuAttendanceStatus({ stu_id, attendance_id, date: param.date }).then(res => {
           if (res.data.status) {
             this.setState({ status: Number(res.data.status) })
+            // this.setState({ status: 1})
           }
         })
       }
@@ -109,6 +115,7 @@ class Index extends Component {
             time: nowTime
           }
         })
+        console.log('aaaa',nowTime,time)
         // 判断时间是否超过duration 超过设置状态为2-->迟到
         if (timeDiff(nowTime, time) > duration) {
           Object.assign(router_query, {
@@ -193,9 +200,14 @@ class Index extends Component {
             注意：你有一场考勤正在进行！
           </NoticeBar>
         )}
-        {status !== 0 && (
+        {status > 0 && (
           <NoticeBar mode="closable" icon={<BizIcon type="child" />}>
             恭喜，你已完成本节课的考勤！
+          </NoticeBar>
+        )}
+        {status < 0 && (
+          <NoticeBar mode="closable" icon={<BizIcon type="child" />}>
+            你好，现在没有需要考勤的课程哦~
           </NoticeBar>
         )}
       </div>
